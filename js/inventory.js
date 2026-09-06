@@ -81,7 +81,8 @@
     var v = value.toLowerCase();
     var cls = "in-stock";
     if (v.indexOf("out") !== -1 || v === "0") cls = "out";
-    else if (v.indexOf("low") !== -1 || v.indexOf("limited") !== -1) cls = "low-stock";
+    else if (v.indexOf("low") !== -1 || v.indexOf("limited") !== -1 ||
+             v.indexOf("pending") !== -1 || v.indexOf("call") !== -1) cls = "low-stock";
     return '<span class="badge ' + cls + '">' + escapeHtml(value || "Unknown") + "</span>";
   }
 

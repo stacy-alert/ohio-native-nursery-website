@@ -45,21 +45,28 @@ related.
 
 ## 3. Wire it into the site
 
-Open `js/inventory.js` and find this line near the top:
+Already done — `js/inventory.js` points at your published sheet:
 
 ```js
-var SHEET_CSV_URL = "REPLACE_WITH_YOUR_PUBLISHED_GOOGLE_SHEET_CSV_URL";
+var SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRN2zhMuRedi9YfZyBQ9ddM-S1VSPmsF8tU9gpAUaw6UCNsiMRVt1GKaWHZQr5I7SO18bXo6W5tmSbr/pub?gid=0&single=true&output=csv";
 ```
 
-Replace the placeholder with the URL you copied. Save, and re-upload
-`js/inventory.js` to Bluehost (or push to GitHub if auto-deploy is set up —
-see `DEPLOY.md`). That's a one-time step.
+If you ever republish the sheet under a different URL, update this line and
+re-upload `js/inventory.js` to Bluehost.
 
-## 4. Day-to-day updates
+## 4. Seed it with your real current stock
+
+Open `inventory-seed.csv` (in this repo) — it's your actual inventory pulled
+from the old site — and paste those rows into your Google Sheet under the
+header row. Rows marked "Pending" had a quantity of "PENDING" on the old
+site (meaning: not yet confirmed available) — change those to real numbers
+once you know them.
+
+## 5. Day-to-day updates
 
 From now on, just open the Google Sheet from any computer or phone and edit
 cells directly — add a row for a new plant, change a price, flip
-Availability to "Out of Stock". The `/plants/` page re-fetches the sheet
+Availability to "Out of Stock". The `/services/` page re-fetches the sheet
 every time someone visits it, so changes typically show up within a few
 minutes (Google's publish-to-web cache refreshes periodically).
 

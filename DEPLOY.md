@@ -10,11 +10,10 @@ all. Follow this order so Google never sees a broken or missing page.
 1. **Back up first.** In Bluehost hosting → your site → Backups, take a full
    backup (or use WordPress's own export/backup plugin). Keep it even after
    go-live, in case you want old content later.
-2. **Note your current URLs.** This site is already built to match
-   WordPress's typical URL pattern (`/about/`, `/contact/`, trailing
-   slashes). If your real site uses different page slugs (e.g. `/our-plants/`
-   instead of `/plants/`), tell me so I can rename the folders to match
-   *exactly* — matching URLs means zero redirects needed and zero SEO risk.
+2. **URLs already match.** Built straight from your actual WordPress export,
+   so the page URLs here are identical to your live site's: `/`, `/about/`,
+   `/services/` (this was your "Shop" page), `/contact/`, `/resources/`.
+   Nothing needs to redirect.
 3. **Google Search Console** — if you don't already have
    ohionativenursery.com verified in
    [Google Search Console](https://search.google.com/search-console), set
@@ -30,27 +29,37 @@ folder — it doesn't care whether that's WordPress or plain HTML.
    like FileZilla with your Bluehost FTP credentials).
 2. Navigate to `public_html` (this is what ohionativenursery.com actually
    serves).
-3. **Rename or move the existing WordPress files** to a backup folder
-   (e.g. `public_html_wordpress_backup`) rather than deleting them — keep
-   them until you're confident the new site is working.
+3. **Move the WordPress files out, but keep `wp-content/uploads`.** This
+   site's pages link directly to your real photos at their existing
+   addresses (e.g. `/wp-content/uploads/2025/08/photo-....jpg`) — reusing
+   the exact same URLs the old site used, so nothing needs re-uploading and
+   no image links break. So: move `wp-admin/`, `wp-includes/`, every
+   `wp-*.php` file, `wp-content/plugins/`, and `wp-content/themes/` into a
+   backup folder (e.g. `public_html_wordpress_backup`) — but leave
+   `wp-content/uploads/` exactly where it is in `public_html`.
 4. Upload every file/folder from this repository into `public_html`,
-   preserving the folder structure (`about/`, `plants/`, `contact/`, `css/`,
-   `js/`, `images/`, plus `index.html`, `contact.php`, `robots.txt`,
-   `sitemap.xml`).
-5. In `contact.php`, double-check the `$to` email address is the one you
-   want form submissions sent to.
-6. Visit ohionativenursery.com and click through every page and the contact
-   form to confirm everything works before considering it done.
+   preserving the folder structure (`about/`, `services/`, `contact/`,
+   `resources/`, `css/`, `js/`, plus `index.html`, `contact.php`,
+   `robots.txt`, `sitemap.xml`). These sit alongside the `wp-content/uploads/`
+   folder you kept — nothing here overwrites it.
+5. Double-check `contact.php` — the `$to` address is already set to
+   Ohionativenursery@outlook.com. Change it if you'd rather messages go
+   elsewhere.
+6. Visit ohionativenursery.com and click through every page, confirm photos
+   load, and submit the contact form to confirm everything works before
+   considering it done.
 
 ## Protecting your SEO during the switch
 
-- **Keep the same URLs.** Since folder names here already match common
-  WordPress permalinks (`/about/`, `/plants/`, `/contact/`), if your real
-  site's URLs match, nothing needs to redirect — Google keeps treating them
-  as the same pages.
-- **If any URL does change** (e.g. an old blog post or product page won't
-  exist in the new site), add a 301 redirect for it rather than letting it
-  404. Bluehost supports this via a `.htaccess` file in `public_html`:
+- **URLs already match your live site** (`/about/`, `/services/`,
+  `/contact/`, `/resources/`) — Google keeps treating them as the same
+  pages, nothing to redirect.
+- **Image URLs match too**, since photos stay at their existing
+  `/wp-content/uploads/...` addresses — any image search traffic or
+  hotlinks pointing at those URLs keeps working.
+- **If any URL does change** (e.g. an old blog post won't exist in the new
+  site), add a 301 redirect for it rather than letting it 404. Bluehost
+  supports this via a `.htaccess` file in `public_html`:
 
   ```
   Redirect 301 /old-page/ https://ohionativenursery.com/new-page/

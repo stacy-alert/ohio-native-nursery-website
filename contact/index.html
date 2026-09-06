@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact | Ohio Native Nursery</title>
-<meta name="description" content="Contact Ohio Native Nursery with questions about native Ohio trees, shrubs, and wildflowers.">
+<title>Contact Us | Ohio Native Nursery</title>
+<meta name="description" content="Contact Ohio Native Nursery — call ahead to set a time for a visit to our Cincinnati, Ohio nursery.">
 <link rel="canonical" href="https://ohionativenursery.com/contact/">
 <link rel="stylesheet" href="/css/styles.css">
 </head>
@@ -18,9 +18,10 @@
     <nav class="main-nav" aria-label="Primary">
       <ul>
         <li><a href="/">Home</a></li>
+        <li><a href="/services/">Shop</a></li>
         <li><a href="/about/">About</a></li>
-        <li><a href="/plants/">Plant Inventory</a></li>
         <li><a href="/contact/" aria-current="page">Contact</a></li>
+        <li><a href="/resources/">Resources</a></li>
       </ul>
     </nav>
   </div>
@@ -30,39 +31,69 @@
   <section class="hero">
     <div class="container">
       <h1>Contact Us</h1>
-      <p class="tagline">Questions about a species, availability, or a bulk order? Send us a message.</p>
+      <p class="tagline">Please Call First to Set a Time for a Visit</p>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <!-- TODO: fill in real phone/email/address once available -->
-      <p><strong>Email:</strong> <a href="mailto:info@ohionativenursery.com">info@ohionativenursery.com</a></p>
-      <p><strong>Phone:</strong> (xxx) xxx-xxxx</p>
-      <p><strong>Address:</strong> Ohio, USA — by appointment</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Patrick Murphy</h3>
+          <p>Founder and Owner of Ohio Native Nursery</p>
+          <p>We are happy to help you and show you our nursery.</p>
+          <p><strong>Telephone:</strong> 513-646-1444<br>
+             <strong>Email:</strong> <a href="mailto:Ohionativenursery@outlook.com">Ohionativenursery@outlook.com</a></p>
+          <p><strong>Nursery location:</strong><br>3731 Laclede Avenue<br>Cincinnati, Ohio 45205</p>
+        </div>
+        <div class="card">
+          <h2 style="margin-top:0;">Send a Message</h2>
+          <form class="contact-form" action="/contact.php" method="POST">
+            <div>
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" required>
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="6" required></textarea>
+            </div>
+            <div style="position:absolute; left:-9999px;" aria-hidden="true">
+              <label for="website">Leave this field blank</label>
+              <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+            <button class="button" type="submit">Send Message</button>
+            <p class="form-note">This form emails us directly — no account or login needed on your end.</p>
+          </form>
+        </div>
+      </div>
 
-      <h2>Send a Message</h2>
-      <form class="contact-form" action="/contact.php" method="POST">
-        <div>
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" required>
+      <h2 style="margin-top:3rem;">Frequently Asked Questions</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Can I return plants if they don't survive?</h3>
+          <p>We guarantee healthy plants at the time of sale. Because survival depends on planting, watering, and site conditions, we can't replace plants that fail after planting. However, we're happy to help troubleshoot and suggest solutions.</p>
         </div>
-        <div>
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required>
+        <div class="card">
+          <h3>What does "native" mean?</h3>
+          <p>Native plants are species that occur naturally in our region and have evolved alongside local wildlife. They're adapted to Ohio's climate and soil, making them lower maintenance and better for pollinators, birds, and other wildlife.</p>
         </div>
-        <div>
-          <label for="message">Message</label>
-          <textarea id="message" name="message" rows="6" required></textarea>
+        <div class="card">
+          <h3>How should I care for my plants after I buy them?</h3>
+          <p>We provide a care sheet with every purchase. Most natives need less maintenance than typical landscaping plants — usually just proper placement, occasional watering in the first year, and seasonal pruning.</p>
         </div>
-        <!-- honeypot field to cut down on spam bots; kept hidden via CSS, left blank by real visitors -->
-        <div style="position:absolute; left:-9999px;" aria-hidden="true">
-          <label for="website">Leave this field blank</label>
-          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        <div class="card">
+          <h3>Do you only sell plants grown here?</h3>
+          <p>Yes. All our trees, shrubs, and wildflowers are grown locally in Cincinnati from regionally sourced seed or cuttings, so they're already adapted to our weather and soils.</p>
         </div>
-        <button class="button" type="submit">Send Message</button>
-        <p class="form-note">This form emails us directly — no account or login needed on your end.</p>
-      </form>
+        <div class="card">
+          <h3>Are your plants pesticide-free?</h3>
+          <p>Yes. We avoid harmful chemicals that could harm pollinators or soil health. Our growing practices focus on healthy, sustainable soil and pest management.</p>
+        </div>
+      </div>
     </div>
   </section>
 </main>
@@ -72,19 +103,19 @@
     <div class="footer-grid">
       <div>
         <strong>Ohio Native Nursery</strong>
-        <p>Ohio, USA</p>
+        <p>3731 Laclede Avenue<br>Cincinnati, Ohio 45205</p>
       </div>
       <div>
         <strong>Contact</strong>
-        <p><a href="mailto:info@ohionativenursery.com">info@ohionativenursery.com</a></p>
+        <p>513-646-1444<br><a href="mailto:Ohionativenursery@outlook.com">Ohionativenursery@outlook.com</a></p>
       </div>
       <div>
-        <strong>Hours</strong>
-        <p>By appointment</p>
+        <strong>Visiting</strong>
+        <p>Please call first to set a time for a visit.</p>
       </div>
     </div>
     <div class="footer-bottom">
-      &copy; <span id="year"></span> Ohio Native Nursery. All rights reserved.
+      &copy; <span id="year"></span> Ohio Native Nursery.
     </div>
   </div>
 </footer>

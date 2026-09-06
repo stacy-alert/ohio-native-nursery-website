@@ -1,8 +1,7 @@
 <?php
 // Handles the contact form at /contact/. Bluehost shared hosting supports PHP's
 // mail() function out of the box, so no external service or API key is needed.
-// TODO: set this to the address you want messages delivered to.
-$to = "info@ohionativenursery.com";
+$to = "Ohionativenursery@outlook.com";
 
 function clean_field(string $value): string {
     // Strip line breaks so form input can't be used to inject extra mail headers.
