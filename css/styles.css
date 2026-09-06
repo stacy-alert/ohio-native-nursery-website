@@ -1,0 +1,312 @@
+/* Ohio Native Nursery — shared stylesheet */
+
+:root {
+  --green-dark: #2f4a2b;
+  --green: #4a7043;
+  --green-light: #eef3ea;
+  --brown: #6b4a2f;
+  --cream: #faf7f0;
+  --ink: #23291f;
+  --muted: #5c6355;
+  --max-width: 1120px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: "Georgia", "Times New Roman", serif;
+  color: var(--ink);
+  background: var(--cream);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  color: var(--green-dark);
+  line-height: 1.25;
+}
+
+a { color: var(--green-dark); }
+a:hover { color: var(--green); }
+
+img { max-width: 100%; display: block; }
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* Header / nav */
+.site-header {
+  background: var(--green-dark);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #fff;
+  text-decoration: none;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--green);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav a {
+  color: #f2efe6;
+  text-decoration: none;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+.main-nav a[aria-current="page"],
+.main-nav a:hover {
+  color: #fff;
+  border-bottom: 2px solid var(--green);
+}
+
+.nav-toggle {
+  display: none;
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(180deg, var(--green-light) 0%, var(--cream) 100%);
+  padding: 3.5rem 0;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero p.tagline {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  color: var(--muted);
+  font-size: 1.15rem;
+  max-width: 640px;
+  margin: 0 auto 1.5rem;
+}
+
+.button {
+  display: inline-block;
+  background: var(--green);
+  color: #fff;
+  text-decoration: none;
+  padding: 0.75rem 1.6rem;
+  border-radius: 4px;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.button:hover { background: var(--green-dark); color: #fff; }
+
+.button.secondary {
+  background: transparent;
+  color: var(--green-dark);
+  border: 2px solid var(--green-dark);
+}
+
+/* Sections */
+.section {
+  padding: 3rem 0;
+}
+
+.section.alt {
+  background: var(--green-light);
+}
+
+.section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e3ddcd;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.card h3 {
+  margin-top: 0;
+  font-size: 1.15rem;
+}
+
+/* Inventory table */
+.inventory-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.inventory-controls input,
+.inventory-controls select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc4ac;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.inventory-status {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  color: var(--muted);
+  margin: 1rem 0;
+}
+
+table.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.95rem;
+}
+
+table.inventory-table caption {
+  text-align: left;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+table.inventory-table th,
+table.inventory-table td {
+  text-align: left;
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid #e3ddcd;
+  vertical-align: top;
+}
+
+table.inventory-table th {
+  background: var(--green-light);
+  color: var(--green-dark);
+  position: sticky;
+  top: 64px;
+}
+
+table.inventory-table tr:hover td {
+  background: #f7f5ec;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.badge.in-stock { background: #e3f0df; color: var(--green-dark); }
+.badge.low-stock { background: #fdf1d6; color: #8a6110; }
+.badge.out { background: #f6e0e0; color: #8a2f2f; }
+
+/* Forms */
+form.contact-form {
+  display: grid;
+  gap: 1rem;
+  max-width: 560px;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+form.contact-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+
+form.contact-form input,
+form.contact-form textarea {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #ccc4ac;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.form-note {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* Footer */
+.site-footer {
+  background: var(--green-dark);
+  color: #dfe6da;
+  padding: 2.5rem 0 1.5rem;
+  margin-top: 3rem;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.9rem;
+}
+
+.site-footer a { color: #fff; }
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: 1rem;
+  font-size: 0.8rem;
+  color: #b7c2b1;
+}
+
+@media (max-width: 720px) {
+  .main-nav ul { gap: 1rem; flex-wrap: wrap; }
+  table.inventory-table th { position: static; }
+}

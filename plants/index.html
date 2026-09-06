@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plant Inventory | Ohio Native Nursery</title>
+<meta name="description" content="Current availability and pricing for native Ohio trees, shrubs, and wildflowers at Ohio Native Nursery.">
+<link rel="canonical" href="https://ohionativenursery.com/plants/">
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/">
+      <span class="brand-mark" aria-hidden="true">🌳</span>
+      Ohio Native Nursery
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/plants/" aria-current="page">Plant Inventory</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container">
+      <h1>Current Plant Inventory</h1>
+      <p class="tagline">This list is pulled live from our nursery's stock sheet — update the sheet and this page updates itself, no website editing needed.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="inventory-controls">
+        <input type="search" id="inventory-search" placeholder="Search by plant name..." aria-label="Search plants">
+        <select id="category-filter" aria-label="Filter by category">
+          <option value="">All Categories</option>
+        </select>
+      </div>
+
+      <p class="inventory-status" id="inventory-status">Loading current inventory&hellip;</p>
+
+      <div style="overflow-x:auto;">
+        <table class="inventory-table" id="inventory-table" hidden>
+          <caption>Availability and pricing change with the season — call or email to confirm before visiting for a specific plant.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Common Name</th>
+              <th scope="col">Scientific Name</th>
+              <th scope="col">Category</th>
+              <th scope="col">Size</th>
+              <th scope="col">Price</th>
+              <th scope="col">Availability</th>
+            </tr>
+          </thead>
+          <tbody id="inventory-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">&copy; <span id="year"></span> Ohio Native Nursery. All rights reserved.</div>
+  </div>
+</footer>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+<script src="/js/inventory.js"></script>
+</body>
+</html>
