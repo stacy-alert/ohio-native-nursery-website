@@ -10,7 +10,7 @@
 (function () {
   "use strict";
 
-  var SHEET_CSV_URL = "REPLACE_WITH_YOUR_PUBLISHED_GOOGLE_SHEET_CSV_URL";
+  var SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRN2zhMuRedi9YfZyBQ9ddM-S1VSPmsF8tU9gpAUaw6UCNsiMRVt1GKaWHZQr5I7SO18bXo6W5tmSbr/pub?gid=0&single=true&output=csv";
 
   var statusEl = document.getElementById("inventory-status");
   var tableEl = document.getElementById("inventory-table");
