@@ -9,22 +9,27 @@ related.
 1. Go to [sheets.google.com](https://sheets.google.com) and create a new
    blank sheet. Name it something like "Ohio Native Nursery Inventory".
 2. In row 1, add these exact column headers (order doesn't matter, spelling
-   does — case doesn't matter):
+   does — case doesn't matter). **Notes** is optional — leave cells in that
+   column blank for any plant that doesn't need one:
 
-   | Common Name | Scientific Name | Category | Size | Price | Availability |
-   |---|---|---|---|---|---|
+   | Common Name | Scientific Name | Category | Size | Price | Quantity | Notes |
+   |---|---|---|---|---|---|---|
 
 3. Fill in one row per plant. Example:
 
-   | Common Name | Scientific Name | Category | Size | Price | Availability |
-   |---|---|---|---|---|---|
-   | Redbud | Cercis canadensis | Tree | 3 gal | $28 | In Stock |
-   | Swamp Milkweed | Asclepias incarnata | Wildflower | Plug | $6 | Low Stock |
-   | Spicebush | Lindera benzoin | Shrub | 1 gal | $15 | Out of Stock |
+   | Common Name | Scientific Name | Category | Size | Price | Quantity | Notes |
+   |---|---|---|---|---|---|---|
+   | Redbud | Cercis canadensis | Tree | 3 gal | $28 | 12 | |
+   | Swamp Milkweed | Asclepias incarnata | Wildflower | Plug | $6 | 3 | Blooms July-Sept |
+   | Spicebush | Lindera benzoin | Shrub | 1 gal | $15 | 0 | Back in stock spring |
 
-   The website recognizes "In Stock" / "Low Stock" (or "Limited") / "Out of
-   Stock" and colors them automatically. Any other text in that column still
-   displays fine, just without the color badge.
+   **Quantity** just needs a plain number — the website turns it into a
+   colored badge automatically: `0` → red "Out of Stock", `1`–`4` → amber
+   "Low Stock (N)", `5+` → green "In Stock (N)". If you don't have an exact
+   count yet, typing text like `Pending` or `Call for Availability` instead
+   of a number works too — it'll show as an amber badge with that exact
+   text. **Notes** is free text — care tips, bloom time, "back in stock
+   soon," anything you want — and shows in its own column.
 
 ## 2. Publish it to the web as CSV
 
@@ -58,15 +63,15 @@ re-upload `js/inventory.js` to Bluehost.
 
 Open `inventory-seed.csv` (in this repo) — it's your actual inventory pulled
 from the old site — and paste those rows into your Google Sheet under the
-header row. Rows marked "Pending" had a quantity of "PENDING" on the old
-site (meaning: not yet confirmed available) — change those to real numbers
-once you know them.
+header row. Rows marked "Pending" in Quantity had a status of "PENDING" on
+the old site (meaning: not yet confirmed available) — change those to real
+numbers once you know them.
 
 ## 5. Day-to-day updates
 
 From now on, just open the Google Sheet from any computer or phone and edit
-cells directly — add a row for a new plant, change a price, flip
-Availability to "Out of Stock". The `/services/` page re-fetches the sheet
+cells directly — add a row for a new plant, change a price, update Quantity
+to `0` when something sells out. The `/services/` page re-fetches the sheet
 every time someone visits it, so changes typically show up within a few
 minutes (Google's publish-to-web cache refreshes periodically).
 

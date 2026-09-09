@@ -4,9 +4,14 @@
 //
 // SETUP (see INVENTORY_SETUP.md for full steps with screenshots-in-words):
 //   1. Create a Google Sheet with these column headers in row 1:
-//      Common Name | Scientific Name | Category | Size | Price | Availability
+//      Common Name | Scientific Name | Category | Size | Price | Quantity | Notes
 //   2. File -> Share -> Publish to web -> select the sheet tab -> CSV -> Publish.
 //   3. Paste the resulting URL below as SHEET_CSV_URL.
+//
+// Quantity can be a plain number (0 = Out of Stock, 1-4 = Low Stock, 5+ = In
+// Stock — badge computed automatically) or text like "Pending" / "Call for
+// Availability" for anything that isn't a simple count. Notes is optional
+// free text (bloom time, care tips, etc.) and can be left blank per row.
 (function () {
   "use strict";
 
@@ -77,13 +82,29 @@
       });
   }
 
-  function availabilityBadge(value) {
-    var v = value.toLowerCase();
-    var cls = "in-stock";
-    if (v.indexOf("out") !== -1 || v === "0") cls = "out";
-    else if (v.indexOf("low") !== -1 || v.indexOf("limited") !== -1 ||
-             v.indexOf("pending") !== -1 || v.indexOf("call") !== -1) cls = "low-stock";
-    return '<span class="badge ' + cls + '">' + escapeHtml(value || "Unknown") + "</span>";
+  var LOW_STOCK_THRESHOLD = 5;
+
+  function quantityBadge(value) {
+    var trimmed = (value || "").trim();
+    var num = parseFloat(trimmed);
+
+    if (trimmed !== "" && !isNaN(num) && /^-?\d+(\.\d+)?$/.test(trimmed)) {
+      if (num <= 0) return badge("Out of Stock", "out");
+      if (num < LOW_STOCK_THRESHOLD) return badge("Low Stock (" + num + ")", "low-stock");
+      return badge("In Stock (" + num + ")", "in-stock");
+    }
+
+    // Non-numeric text (e.g. "Pending", "Out of Stock until 2026", "Call for Availability").
+    var v = trimmed.toLowerCase();
+    if (v === "") return badge("Unknown", "low-stock");
+    if (v.indexOf("out") !== -1) return badge(trimmed, "out");
+    if (v.indexOf("low") !== -1 || v.indexOf("limited") !== -1 ||
+        v.indexOf("pending") !== -1 || v.indexOf("call") !== -1) return badge(trimmed, "low-stock");
+    return badge(trimmed, "in-stock");
+  }
+
+  function badge(label, cls) {
+    return '<span class="badge ' + cls + '">' + escapeHtml(label) + "</span>";
   }
 
   function escapeHtml(str) {
@@ -121,7 +142,8 @@
         "<td>" + escapeHtml(item.category || "") + "</td>" +
         "<td>" + escapeHtml(item.size || "") + "</td>" +
         "<td>" + escapeHtml(item.price || "") + "</td>" +
-        "<td>" + availabilityBadge(item.availability || "") + "</td>" +
+        "<td>" + quantityBadge(item.quantity || "") + "</td>" +
+        "<td>" + escapeHtml(item.notes || "") + "</td>" +
         "</tr>";
     }).join("");
 
@@ -131,7 +153,7 @@
   }
 
   // Normalize aliases so slightly different column names in the sheet
-  // (e.g. "Qty" instead of "Availability") still map into the same fields.
+  // (e.g. "Qty" instead of "Quantity") still map into the same fields.
   function normalizeItem(raw) {
     return {
       "common name": raw["common name"] || raw["name"] || "",
@@ -139,7 +161,8 @@
       category: raw.category || raw.type || "",
       size: raw.size || raw["pot size"] || "",
       price: raw.price || "",
-      availability: raw.availability || raw.stock || raw.qty || raw.quantity || ""
+      quantity: raw.quantity || raw.qty || raw.stock || raw.availability || "",
+      notes: raw.notes || raw.note || raw.comments || ""
     };
   }
 

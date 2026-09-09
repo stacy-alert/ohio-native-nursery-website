@@ -1,14 +1,14 @@
-Common Name,Scientific Name,Category,Size,Price,Availability
-American Black Elderberry,Sambucus canadensis,Native Plant,,$25,In Stock (25)
-American Hazelnut Sprout,Corylus americana,Native Plant,,$10,In Stock (24)
-Red Twig Dogwood,Cornus sericea,Native Plant,,$25,Low Stock (2)
-Common Ninebark,Physocarpus opulifolius,Native Plant,,$25,Out of Stock until 2026
-Common Pawpaw,Asimina triloba,Native Plant,,$25,Pending
-American Plum,Prunus americana,Native Plant,,$25,Pending
-Silver Maple,Acer saccharinum,Native Plant,,$25,Pending
-Swamp White Oak,Quercus bicolor,Native Plant,,$25,Pending
-Black Willow,Salix nigra,Native Plant,,$25,Low Stock (4)
-Northern Red Oak,Quercus rubra,Native Plant,,$25,Pending
-Bur Oak,Quercus macrocarpa,Native Plant,,$25,Pending
-Chicago Hardy Fig,,Fruit Tree,,$25,In Stock (70)
-Jerusalem Artichokes,,Fruit Tree,,$25,Out of Stock until 2026
+Common Name,Scientific Name,Category,Size,Price,Quantity,Notes
+American Black Elderberry,Sambucus canadensis,Native Plant,,$25,25,
+American Hazelnut Sprout,Corylus americana,Native Plant,,$10,24,
+Red Twig Dogwood,Cornus sericea,Native Plant,,$25,2,
+Common Ninebark,Physocarpus opulifolius,Native Plant,,$25,0,Back in stock 2026
+Common Pawpaw,Asimina triloba,Native Plant,,$25,Pending,
+American Plum,Prunus americana,Native Plant,,$25,Pending,
+Silver Maple,Acer saccharinum,Native Plant,,$25,Pending,
+Swamp White Oak,Quercus bicolor,Native Plant,,$25,Pending,
+Black Willow,Salix nigra,Native Plant,,$25,4,
+Northern Red Oak,Quercus rubra,Native Plant,,$25,Pending,
+Bur Oak,Quercus macrocarpa,Native Plant,,$25,Pending,
+Chicago Hardy Fig,,Fruit Tree,,$25,70,
+Jerusalem Artichokes,,Fruit Tree,,$25,0,Back in stock 2026
