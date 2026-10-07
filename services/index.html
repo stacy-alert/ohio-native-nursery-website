@@ -73,6 +73,21 @@
   </div>
 </footer>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+<script>
+// Keeps the sticky table header positioned right below the site header,
+// whatever its actual rendered height is (varies with font size, zoom, and
+// whether the nav wraps to a second line) — a hardcoded px offset drifted
+// out of sync and let the sticky header cover the first table rows.
+(function () {
+  var header = document.querySelector(".site-header");
+  if (!header) return;
+  function syncHeaderHeight() {
+    document.documentElement.style.setProperty("--header-height", header.offsetHeight + "px");
+  }
+  syncHeaderHeight();
+  window.addEventListener("resize", syncHeaderHeight);
+})();
+</script>
 <script src="/js/inventory.js"></script>
 </body>
 </html>

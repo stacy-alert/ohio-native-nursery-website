@@ -9,6 +9,7 @@
   --ink: #23291f;
   --muted: #5c6355;
   --max-width: 1120px;
+  --header-height: 64px;
 }
 
 * { box-sizing: border-box; }
@@ -231,7 +232,7 @@ table.inventory-table th {
   background: var(--green-light);
   color: var(--green-dark);
   position: sticky;
-  top: 64px;
+  top: var(--header-height);
 }
 
 table.inventory-table tr:hover td {
