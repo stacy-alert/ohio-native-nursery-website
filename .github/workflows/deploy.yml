@@ -1,0 +1,29 @@
+name: Deploy to Bluehost
+
+# Runs on GitHub's own servers (not sandboxed the way local dev sessions are),
+# so it can reach Bluehost's SFTP server directly. Every push to main uploads
+# the site files automatically — no manual File Manager/ZIP step needed.
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Upload site files over SFTP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.BLUEHOST_SFTP_HOST }}
+          port: 22
+          username: ${{ secrets.BLUEHOST_SFTP_USERNAME }}
+          password: ${{ secrets.BLUEHOST_SFTP_PASSWORD }}
+          # Only real site files — keeps README/DEPLOY docs and .github out of
+          # the public web root. wp-content/uploads (your real photos) is
+          # never touched by this workflow.
+          source: "index.html,about,services,contact,resources,css,js,contact.php,robots.txt,sitemap.xml"
+          target: ${{ secrets.BLUEHOST_PUBLIC_HTML_PATH }}

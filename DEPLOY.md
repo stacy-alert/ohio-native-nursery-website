@@ -78,19 +78,36 @@ folder — it doesn't care whether that's WordPress or plain HTML.
 - **Monitor Search Console's Coverage report** for a couple of weeks after
   launch, watching for new 404s or crawl errors.
 
-## Optional: auto-deploy from GitHub instead of manual uploads
+## Auto-deploy from GitHub (recommended — set up once, never upload by hand again)
 
-Right now, updating text/pages means editing files and re-uploading to
-Bluehost by hand. If you'd rather push a button (or a `git push`) and have
-it appear live automatically, that needs either:
+This repo includes `.github/workflows/deploy.yml`, which uploads the site to
+Bluehost over SFTP automatically every time a change is pushed to `main`.
+It runs on GitHub's own servers (so it can reach Bluehost directly) — set it
+up once and every future fix ships itself.
 
-- A hosting switch to Netlify/Vercel (connects directly to the GitHub repo,
-  free, auto-deploys on every push) — but this usually means pointing your
-  domain's DNS away from Bluehost, or
-- A small script/GitHub Action that deploys to Bluehost over
-  SFTP on every push (Bluehost supports SFTP; this can be added later
-  without disrupting anything).
+1. Get your Bluehost SFTP details: **Hosting → Advanced → FTP Accounts**
+   (the same page you used before). Note the **host**, **username**, and
+   **password** for an account scoped to `public_html`, and the **home
+   directory** path it shows (looks like `/home2/<something>/public_html`).
+2. On GitHub: go to this repo → **Settings → Secrets and variables →
+   Actions → New repository secret**. Add three secrets:
+   - `BLUEHOST_SFTP_HOST` — the host shown on that page
+   - `BLUEHOST_SFTP_USERNAME` — the username shown there
+   - `BLUEHOST_SFTP_PASSWORD` — the password for that account
+   - `BLUEHOST_PUBLIC_HTML_PATH` — the home directory path shown there
+     (e.g. `/home2/fzghtxmy/public_html`)
 
-You said you want to stay on Bluehost for now, so this repo is set up for
-manual upload. Say the word if you'd like the SFTP auto-deploy added later —
-it's a small addition, not a rebuild.
+   These are encrypted by GitHub, never shown in logs, and not visible to
+   anyone browsing the repo — including Claude in future sessions.
+3. That's it. Push anything to `main` and watch the **Actions** tab in the
+   repo — you'll see "Deploy to Bluehost" run and finish in under a minute.
+4. One-time only: you still need to do the manual move described in
+   **"Uploading the static site"** above (clearing out WordPress core files
+   from `public_html`, keeping `wp-content/uploads/`) before the first
+   auto-deploy, since the workflow only uploads this repo's files — it
+   won't touch or delete anything else already in `public_html`.
+
+If you'd rather not store hosting credentials in GitHub at all, skip this
+section and keep using the manual File Manager upload described above for
+every future update too.
+
