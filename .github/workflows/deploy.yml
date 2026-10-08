@@ -8,6 +8,16 @@ name: Deploy to Bluehost
 # sub-accounts like "deploy@domain.com" are virtual FTP users, not real
 # SSH/SFTP-capable system users, so SFTP auth fails against them even with
 # a correct password. FTP/FTPS is what these accounts are actually for.
+#
+# Uploads with plain lftp "mirror --ignore-time" instead of a third-party
+# GitHub Action: a prior attempt (SamKirkland/FTP-Deploy-Action) reported
+# "success" twice in a row but silently failed to upload some changed
+# files (its incremental diff against a remote state file apparently
+# missed them). lftp here does no diffing at all — every run re-uploads
+# every file unconditionally, so there's no "did it actually detect the
+# change" question to get wrong. --verbose prints every single file
+# transferred, right in the Actions log, so any future "it didn't update"
+# report can be checked against that log instead of guessed at.
 
 on:
   push:
@@ -21,23 +31,31 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
 
-      - name: Upload site files over FTPS
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.BLUEHOST_SFTP_HOST }}
-          username: ${{ secrets.BLUEHOST_SFTP_USERNAME }}
-          password: ${{ secrets.BLUEHOST_SFTP_PASSWORD }}
-          protocol: ftps
-          port: 21
-          # This FTP account's home directory IS public_html (Bluehost
-          # chroots it there), so the FTP root "./" already means
-          # public_html — do not use the absolute server path here.
-          server-dir: ./
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/.github/**
-            README.md
-            DEPLOY.md
-            INVENTORY_SETUP.md
-            inventory-seed.csv
+      - name: Stage deployable files only
+        # Only real site files go to the web root — keeps README/DEPLOY
+        # docs, .github, and the inventory seed CSV out of public_html.
+        # wp-content/uploads (the real photos) already lives on the server
+        # and isn't part of this repo, so it's never touched by this step.
+        run: |
+          mkdir deploy_root
+          cp -r index.html about services contact resources css js contact.php robots.txt sitemap.xml deploy_root/
+          echo "Files staged for upload:"
+          find deploy_root -type f | sort
+
+      - name: Install lftp
+        run: sudo apt-get update -y && sudo apt-get install -y lftp
+
+      - name: Upload every file over FTPS (no incremental diff, no skipped files)
+        env:
+          FTP_HOST: ${{ secrets.BLUEHOST_SFTP_HOST }}
+          FTP_USER: ${{ secrets.BLUEHOST_SFTP_USERNAME }}
+          FTP_PASS: ${{ secrets.BLUEHOST_SFTP_PASSWORD }}
+        run: |
+          lftp -u "$FTP_USER,$FTP_PASS" -e "
+            set ftp:ssl-force true;
+            set ssl:verify-certificate no;
+            set ftp:passive-mode true;
+            lcd deploy_root;
+            mirror -R --verbose=3 --ignore-time --parallel=2 . . ;
+            bye
+          " "$FTP_HOST"
