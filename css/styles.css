@@ -10,7 +10,6 @@
   --gold: #c98a2c;
   --cream: #fffaf2;
   --max-width: 1120px;
-  --header-height: 64px;
 }
 
 * { box-sizing: border-box; }
@@ -333,10 +332,14 @@ table.inventory-table td {
 }
 
 table.inventory-table th {
+  /* Not position:sticky — a sticky th inside this table's horizontal-scroll
+     wrapper (overflow-x:auto, needed so the table doesn't blow out the
+     layout on narrow screens) doesn't stick to the viewport; it breaks
+     against that wrapper instead, which is what was actually causing the
+     header to visually clip/overlap the first row no matter how its height
+     was measured. Scrolls normally with the rest of the table instead. */
   background: var(--sand-light);
   color: var(--rust-dark);
-  position: sticky;
-  top: var(--header-height);
   box-shadow: 0 1px 0 #e0cfae;
 }
 
@@ -421,5 +424,4 @@ form.contact-form textarea:focus {
 
 @media (max-width: 720px) {
   .main-nav ul { gap: 1rem; flex-wrap: wrap; }
-  table.inventory-table th { position: static; }
 }
