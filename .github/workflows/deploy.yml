@@ -1,8 +1,13 @@
 name: Deploy to Bluehost
 
 # Runs on GitHub's own servers (not sandboxed the way local dev sessions are),
-# so it can reach Bluehost's SFTP server directly. Every push to main uploads
-# the site files automatically — no manual File Manager/ZIP step needed.
+# so it can reach Bluehost directly. Every push to main uploads the site
+# files automatically — no manual File Manager/ZIP step needed.
+#
+# Uses FTPS (encrypted FTP, port 21) rather than SFTP — Bluehost FTP
+# sub-accounts like "deploy@domain.com" are virtual FTP users, not real
+# SSH/SFTP-capable system users, so SFTP auth fails against them even with
+# a correct password. FTP/FTPS is what these accounts are actually for.
 
 on:
   push:
@@ -16,15 +21,23 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
 
-      - name: Upload site files over SFTP
-        uses: appleboy/scp-action@v0.1.7
+      - name: Upload site files over FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: ${{ secrets.BLUEHOST_SFTP_HOST }}
-          port: 22
+          server: ${{ secrets.BLUEHOST_SFTP_HOST }}
           username: ${{ secrets.BLUEHOST_SFTP_USERNAME }}
           password: ${{ secrets.BLUEHOST_SFTP_PASSWORD }}
-          # Only real site files — keeps README/DEPLOY docs and .github out of
-          # the public web root. wp-content/uploads (your real photos) is
-          # never touched by this workflow.
-          source: "index.html,about,services,contact,resources,css,js,contact.php,robots.txt,sitemap.xml"
-          target: ${{ secrets.BLUEHOST_PUBLIC_HTML_PATH }}
+          protocol: ftps
+          port: 21
+          # This FTP account's home directory IS public_html (Bluehost
+          # chroots it there), so the FTP root "./" already means
+          # public_html — do not use the absolute server path here.
+          server-dir: ./
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            README.md
+            DEPLOY.md
+            INVENTORY_SETUP.md
+            inventory-seed.csv

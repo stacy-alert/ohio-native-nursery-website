@@ -81,21 +81,21 @@ folder — it doesn't care whether that's WordPress or plain HTML.
 ## Auto-deploy from GitHub (recommended — set up once, never upload by hand again)
 
 This repo includes `.github/workflows/deploy.yml`, which uploads the site to
-Bluehost over SFTP automatically every time a change is pushed to `main`.
+Bluehost over FTPS automatically every time a change is pushed to `main`.
 It runs on GitHub's own servers (so it can reach Bluehost directly) — set it
 up once and every future fix ships itself.
 
-1. Get your Bluehost SFTP details: **Hosting → Advanced → FTP Accounts**
+1. Get your Bluehost FTP details: **Hosting → Advanced → FTP Accounts**
    (the same page you used before). Note the **host**, **username**, and
-   **password** for an account scoped to `public_html`, and the **home
-   directory** path it shows (looks like `/home2/<something>/public_html`).
+   **password** for an account scoped to `public_html`.
 2. On GitHub: go to this repo → **Settings → Secrets and variables →
    Actions → New repository secret**. Add three secrets:
    - `BLUEHOST_SFTP_HOST` — the host shown on that page
    - `BLUEHOST_SFTP_USERNAME` — the username shown there
    - `BLUEHOST_SFTP_PASSWORD` — the password for that account
-   - `BLUEHOST_PUBLIC_HTML_PATH` — the home directory path shown there
-     (e.g. `/home2/fzghtxmy/public_html`)
+
+   (The secret names say "SFTP" from an earlier version of this workflow —
+   harmless, just a naming leftover; the workflow now uses FTPS.)
 
    These are encrypted by GitHub, never shown in logs, and not visible to
    anyone browsing the repo — including Claude in future sessions.
