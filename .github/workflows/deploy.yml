@@ -71,3 +71,24 @@ jobs:
             > deploy.lftp
           cat deploy.lftp | sed 's/open -u.*/open -u "***"/'
           lftp -f deploy.lftp
+
+      - name: Verify the live domain actually serves this deploy
+        # Runs from GitHub's own network — nothing here routes through
+        # anyone's home router/ISP, so this is a true "what does the
+        # server actually have" check, independent of any client-side or
+        # network-level caching a visitor might be hitting. If this step
+        # fails, the problem is genuinely server-side; if it passes, any
+        # "still looks old" report is downstream caching, not a bad
+        # deploy — and this run's own log is the record of that.
+        run: |
+          sleep 5
+          css=$(curl -sf --max-time 20 "https://ohionativenursery.com/css/styles.css?check=$GITHUB_RUN_ID")
+          echo "----- fetched live styles.css (first 20 lines) -----"
+          echo "$css" | head -20
+          echo "-----------------------------------------------------"
+          if echo "$css" | grep -q "rust-dark"; then
+            echo "CONFIRMED: live domain is serving the current design."
+          else
+            echo "::error::Live domain's CSS does NOT contain the new design tokens — the deploy did not actually reach ohionativenursery.com."
+            exit 1
+          fi
