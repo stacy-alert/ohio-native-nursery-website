@@ -51,11 +51,23 @@ jobs:
           FTP_USER: ${{ secrets.BLUEHOST_SFTP_USERNAME }}
           FTP_PASS: ${{ secrets.BLUEHOST_SFTP_PASSWORD }}
         run: |
-          lftp -u "$FTP_USER,$FTP_PASS" -e "
-            set ftp:ssl-force true;
-            set ssl:verify-certificate no;
-            set ftp:passive-mode true;
-            lcd deploy_root;
-            mirror -R --verbose=3 --ignore-time --parallel=2 . . ;
-            bye
-          " "$FTP_HOST"
+          # Written as a script file (not inline -e) and connects via an
+          # explicit "open" command AFTER the ssl/passive settings are
+          # applied. Passing the host as a trailing CLI argument instead
+          # triggers an *implicit* connect before any -e settings take
+          # effect, which is what caused the previous "mirror: Not
+          # connected" failure — it tried plain FTP before ssl-force was
+          # ever set. cmd:fail-exit makes any real connect/auth error abort
+          # with its actual message instead of cascading into a vague one.
+          printf '%s\n' \
+            'set ftp:ssl-force true' \
+            'set ssl:verify-certificate no' \
+            'set ftp:passive-mode true' \
+            'set cmd:fail-exit true' \
+            "open -u \"$FTP_USER,$FTP_PASS\" \"ftp://$FTP_HOST\"" \
+            'lcd deploy_root' \
+            'mirror -R --verbose=3 --ignore-time --parallel=2 . .' \
+            'bye' \
+            > deploy.lftp
+          cat deploy.lftp | sed 's/open -u.*/open -u "***"/'
+          lftp -f deploy.lftp
