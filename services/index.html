@@ -78,23 +78,27 @@
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 <script>
 // Keeps the sticky table header positioned right below the site header,
-// whatever its actual rendered height is (varies with font size, zoom, and
-// whether the nav wraps to a second line) — a hardcoded px offset drifted
-// out of sync and let the sticky header cover the first table rows.
+// whatever its actual rendered height is. A one-time measurement plus a
+// guess at which events might change it (resize, fonts.ready) kept missing
+// the real moment the header's size changed — ResizeObserver instead fires
+// automatically on every actual size change of the header element itself,
+// for any reason (font swap, nav wrap, zoom, anything), so there's no
+// timing to get wrong. +1px closes a sub-pixel rounding gap between the
+// integer offsetHeight and the header's true fractional rendered height.
 (function () {
   var header = document.querySelector(".site-header");
   if (!header) return;
   function syncHeaderHeight() {
-    document.documentElement.style.setProperty("--header-height", header.offsetHeight + "px");
+    document.documentElement.style.setProperty("--header-height", (header.offsetHeight + 1) + "px");
   }
   syncHeaderHeight();
-  window.addEventListener("resize", syncHeaderHeight);
-  // The header's height can change once the Fraunces/Inter web fonts finish
-  // loading (the fallback font renders at a different size), which happens
-  // after this script's first measurement — re-measure once fonts settle so
-  // the sticky offset doesn't stay frozen at the pre-font-load height.
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(syncHeaderHeight);
+  if (window.ResizeObserver) {
+    new ResizeObserver(syncHeaderHeight).observe(header);
+  } else {
+    window.addEventListener("resize", syncHeaderHeight);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(syncHeaderHeight);
+    }
   }
 })();
 </script>
