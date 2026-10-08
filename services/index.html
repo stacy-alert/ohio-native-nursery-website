@@ -89,6 +89,13 @@
   }
   syncHeaderHeight();
   window.addEventListener("resize", syncHeaderHeight);
+  // The header's height can change once the Fraunces/Inter web fonts finish
+  // loading (the fallback font renders at a different size), which happens
+  // after this script's first measurement — re-measure once fonts settle so
+  // the sticky offset doesn't stay frozen at the pre-font-load height.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(syncHeaderHeight);
+  }
 })();
 </script>
 <script src="/js/inventory.js?v=2"></script>

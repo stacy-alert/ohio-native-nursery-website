@@ -8,6 +8,7 @@
   --ink: #2a211a;
   --muted: #6b5d4f;
   --gold: #c98a2c;
+  --cream: #fffaf2;
   --max-width: 1120px;
   --header-height: 64px;
 }
@@ -20,7 +21,11 @@ body {
   margin: 0;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: var(--ink);
-  background: var(--sand);
+  background-color: var(--sand);
+  /* A faint paper-grain texture so flat color areas read as material rather
+     than bare CSS color — subtle enough to not show up in a screenshot
+     thumbnail, but gives the page a bit of tooth up close. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
   line-height: 1.6;
 }
 
@@ -45,10 +50,14 @@ img { max-width: 100%; display: block; }
 /* Header / nav */
 .site-header {
   background: var(--rust-dark);
+  background-image:
+    radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 14px 14px;
   color: #fff;
   position: sticky;
   top: 0;
   z-index: 50;
+  box-shadow: 0 2px 10px rgba(42,33,26,0.18);
 }
 
 .site-header .container {
@@ -79,6 +88,7 @@ img { max-width: 100%; display: block; }
   align-items: center;
   justify-content: center;
   font-size: 1.1rem;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.35);
 }
 
 .main-nav ul {
@@ -94,12 +104,14 @@ img { max-width: 100%; display: block; }
   text-decoration: none;
   font-size: 0.95rem;
   letter-spacing: 0.02em;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
 }
 
 .main-nav a[aria-current="page"],
 .main-nav a:hover {
   color: #fff;
-  border-bottom: 2px solid var(--gold);
+  border-bottom-color: var(--gold);
 }
 
 .nav-toggle {
@@ -108,9 +120,27 @@ img { max-width: 100%; display: block; }
 
 /* Hero */
 .hero {
+  position: relative;
   background: linear-gradient(180deg, var(--sand-light) 0%, var(--sand) 100%);
-  padding: 3.5rem 0;
+  background-image:
+    linear-gradient(180deg, var(--sand-light) 0%, var(--sand) 100%),
+    radial-gradient(rgba(124,57,32,0.07) 1.5px, transparent 1.5px);
+  background-size: auto, 22px 22px;
+  padding: 2.75rem 0 2.5rem;
   text-align: center;
+  overflow: hidden;
+}
+
+.hero::after {
+  /* Soft organic edge instead of a hard horizontal line into the next block */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 28px;
+  background: var(--sand);
+  clip-path: polygon(0% 100%, 100% 100%, 100% 40%, 92% 60%, 83% 30%, 75% 65%, 67% 20%, 58% 55%, 50% 15%, 42% 55%, 33% 20%, 25% 65%, 17% 30%, 8% 60%, 0% 40%);
 }
 
 .hero h1 {
@@ -125,6 +155,22 @@ img { max-width: 100%; display: block; }
   margin: 0 auto 1.5rem;
 }
 
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: var(--rust-dark);
+  background: rgba(201,138,44,0.14);
+  border: 1px solid rgba(201,138,44,0.35);
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
 .button {
   display: inline-block;
   background: var(--rust);
@@ -136,19 +182,37 @@ img { max-width: 100%; display: block; }
   border: none;
   cursor: pointer;
   font-size: 1rem;
+  box-shadow: 0 3px 0 var(--rust-dark);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-.button:hover { background: var(--rust-dark); color: #fff; }
+.button:hover {
+  background: var(--rust);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 0 var(--rust-dark);
+}
+
+.button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 0 var(--rust-dark);
+}
 
 .button.secondary {
   background: transparent;
   color: var(--rust-dark);
   border: 2px solid var(--rust-dark);
+  box-shadow: none;
+}
+
+.button.secondary:hover {
+  background: var(--rust-dark);
+  color: #fff;
 }
 
 /* Sections */
 .section {
-  padding: 3rem 0;
+  padding: 2.75rem 0;
 }
 
 .section.alt {
@@ -157,7 +221,42 @@ img { max-width: 100%; display: block; }
 
 .section h2 {
   font-size: 1.9rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.4rem;
+  display: inline-block;
+}
+
+.section h2::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 3px;
+  margin-top: 0.5rem;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  border-radius: 2px;
+}
+
+.section > .container > p:first-of-type,
+.section h2 + p {
+  margin-top: 0.75rem;
+}
+
+/* Dark band (CTA, etc.) */
+.band-dark {
+  background: linear-gradient(165deg, var(--rust-dark), #4a2415);
+  color: #fff;
+  border-radius: 14px;
+  padding: 2.75rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 10px 30px -10px rgba(42,33,26,0.45);
+}
+
+.band-dark h2 {
+  color: #fff;
+}
+
+.band-dark h2::after {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .grid {
@@ -168,10 +267,18 @@ img { max-width: 100%; display: block; }
 }
 
 .card {
-  background: #fff;
+  background: var(--cream);
   border: 1px solid #e8dcc8;
+  border-top: 3px solid var(--gold);
   border-radius: 8px;
   padding: 1.5rem;
+  box-shadow: 0 1px 2px rgba(42,33,26,0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -12px rgba(42,33,26,0.25);
 }
 
 .card h3 {
@@ -184,7 +291,7 @@ img { max-width: 100%; display: block; }
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin: 1.5rem 0;
+  margin: 0.25rem 0 1.25rem;
 }
 
 .inventory-controls input,
@@ -194,6 +301,7 @@ img { max-width: 100%; display: block; }
   border-radius: 4px;
   font-size: 0.95rem;
   font-family: inherit;
+  background: #fff;
 }
 
 .inventory-status {
@@ -206,6 +314,7 @@ table.inventory-table {
   border-collapse: collapse;
   background: #fff;
   font-size: 0.95rem;
+  box-shadow: 0 1px 3px rgba(42,33,26,0.06);
 }
 
 table.inventory-table caption {
@@ -228,6 +337,7 @@ table.inventory-table th {
   color: var(--rust-dark);
   position: sticky;
   top: var(--header-height);
+  box-shadow: 0 1px 0 #e0cfae;
 }
 
 table.inventory-table tr:hover td {
@@ -268,6 +378,14 @@ form.contact-form textarea {
   border-radius: 4px;
   font-family: inherit;
   font-size: 1rem;
+  background: #fff;
+}
+
+form.contact-form input:focus,
+form.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--rust);
+  box-shadow: 0 0 0 3px rgba(179,80,46,0.15);
 }
 
 .form-note {
@@ -285,6 +403,7 @@ form.contact-form textarea {
 }
 
 .site-footer a { color: #fff; }
+.site-footer strong { color: #fff; }
 
 .footer-grid {
   display: grid;
